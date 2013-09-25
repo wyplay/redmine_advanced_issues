@@ -58,7 +58,7 @@
 <!-- p><%= f.text_field :estimated_time, :size => 3, :disabled => !@issue.leaf?, :required => @issue.required_attribute?('estimated_hours') %> <%= l(:field_hours) %></p -->
 
 <p>
-  <%= f.text_field :estimated_hours, :value=>@issue.estimated_time, :size => 3, :disabled => !@issue.leaf?, :required => @issue.required_attribute?('estimated_hours') %> <%= l(:field_estimated_default, :unit => @issue.default_unit_time) %>
+  <%= f.text_field :estimated_time, :value=>@issue.estimated_time, :size => 3, :disabled => !@issue.leaf?, :required => @issue.required_attribute?('estimated_hours') %> <%= l(:field_estimated_default, :unit => @issue.default_unit_time) %>
 </p>
 
 <% end %>

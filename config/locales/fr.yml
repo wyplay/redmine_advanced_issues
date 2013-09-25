@@ -27,7 +27,8 @@ fr:
   years: "années"
   year: "année"
 
-  field_estimated_time: "Heures par defaut"
+  field_estimated_time: "Temps estimé"
+  field_estimated_hour: "Heures estimées"
   field_estimated_default: "%{unit} par défaut"
   field_time_entry_hours: "Temps passé"
   

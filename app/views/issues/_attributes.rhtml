@@ -41,7 +41,7 @@
 <!-- p><%= f.text_field :estimated_hours, :size => 3, :disabled => !@issue.leaf? %> <%= l(:field_estimated_default, :unit => @issue.default_unit_time) %></p -->
 
 <p>
-  <label for="issue_estimated_hours"><%= l(:field_estimated_hours) %></label>
+  <label for="issue_estimated_hours"><%= l(:field_estimated_time) %></label>
   <%= text_field_tag 'issue[estimated_hours]', @issue.estimated_time, :size => 3, :disabled => !@issue.leaf? %> <%= l(:field_estimated_default, :unit => @issue.default_unit_time) %>
 </p>
 

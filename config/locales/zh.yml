@@ -31,6 +31,7 @@ zh:
   year: "年"
 
   field_estimated_time: "默认小时"
+  field_estimated_hours: "默认小时"
   field_estimated_default: "默认单位 %{unit}"
   field_time_entry_hours: "已用时"
   

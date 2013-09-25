@@ -38,6 +38,16 @@ module RedmineAdvancedIssues
 			      :sortable => "(IF(#{Issue.table_name}.estimated_hours IS NULL,0,#{Issue.table_name}.estimated_hours) * #{Issue.table_name}.done_ratio / 100))"
 			      ) unless columns.detect { |c| c.name == :calculated_spent_hours }
 
+	      columns << QueryColumn.new(:total_spent_hours,
+                :caption => :label_total_spent_hours,
+                :sortable => "(select sum(hours) from #{TimeEntry.table_name} where #{TimeEntry.table_name}.issue_id BETWEEN #{Issue.table_name}.lft AND #{Issue.table_name}.rgt)"
+                ) unless columns.detect { |c| c.name == :total_spent_hours }
+
+	      columns << QueryColumn.new(:total_spent_time,
+                :caption => :label_total_spent_time,
+                :sortable => "(select sum(hours) from #{TimeEntry.table_name} where #{TimeEntry.table_name}.issue_id BETWEEN #{Issue.table_name}.lft AND #{Issue.table_name}.rgt)"
+            ) unless columns.detect { |c| c.name == :total_spent_time }
+
 	      columns << QueryColumn.new(:calculated_spent_time, 
 			      :caption => :label_calculated_spent_time, 
 			      :sortable => "(IF(#{Issue.table_name}.estimated_hours IS NULL,0,#{Issue.table_name}.estimated_hours) * #{Issue.table_name}.done_ratio / 100)) / #{TimeManagement.getCoef(Setting.plugin_redmine_advanced_issues['default_unit'].to_s)}"
@@ -91,6 +101,16 @@ module RedmineAdvancedIssues
 			      :caption => :label_calculated_spent_hours, 
 			      :sortable => "(IF(#{Issue.table_name}.estimated_hours IS NULL,0,#{Issue.table_name}.estimated_hours) * #{Issue.table_name}.done_ratio / 100))"
 			      ) unless columns.detect { |c| c.name == :calculated_spent_hours }
+
+	      columns << QueryColumn.new(:total_spent_hours,
+                :caption => :label_total_spent_hours,
+                :sortable => "(select sum(hours) from #{TimeEntry.table_name} where #{TimeEntry.table_name}.issue_id BETWEEN #{Issue.table_name}.lft AND #{Issue.table_name}.rgt)"
+                ) unless columns.detect { |c| c.name == :total_spent_hours }
+
+	      columns << QueryColumn.new(:total_spent_time,
+                :caption => :label_total_spent_time,
+                :sortable => "(select sum(hours) from #{TimeEntry.table_name} where #{TimeEntry.table_name}.issue_id BETWEEN #{Issue.table_name}.lft AND #{Issue.table_name}.rgt)"
+            ) unless columns.detect { |c| c.name == :total_spent_time }
 
 	      columns << QueryColumn.new(:calculated_spent_time, 
 			      :caption => :label_calculated_spent_time, 

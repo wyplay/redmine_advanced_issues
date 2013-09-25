@@ -83,11 +83,19 @@ module RedmineAdvancedIssues
         end #default_unit_time
 
         def spent_time
-          hours = spent_hours
+          hours = total_spent_hours
 		  return nil if hours.nil?
           time = RedmineAdvancedIssues::TimeManagement.calculate hours, Setting.plugin_redmine_advanced_issues['default_unit']
 		  return time.to_f
 		  #return sprintf "%.2f %c", time.to_f, default_unit_time
+        end #def
+
+        def total_spent_time
+          hours = total_spent_hours
+          return nil if hours.nil?
+          time = RedmineAdvancedIssues::TimeManagement.calculate hours, Setting.plugin_redmine_advanced_issues['default_unit']
+          return time.to_f
+          #return sprintf "%.2f %c", time.to_f, default_unit_time
         end #def
 		  
 		  def calculated_spent_hours
@@ -136,7 +144,18 @@ module RedmineAdvancedIssues
 		  ##
 		  def save_issue_with_child_records_with_time_entry_record(params, existing_time_entry=nil)
 			if params[:time_entry] && params[:time_entry][:hours].present?
-			  params[:time_entry][:hours] = RedmineAdvancedIssues::TimeManagement.calculate params[:time_entry][:hours], Setting.plugin_redmine_advanced_issues['default_unit']
+				value = params[:time_entry][:hours]
+				time_unit = ""
+
+				if value.to_s =~ /^([0-9]+)\s*[a-z]{1}$/
+	                time_unit = RedmineAdvancedIssues::TimeManagement.getUnitTimeFromChar value.to_s[-1, 1]
+    	        end #if
+
+				if !time_unit.empty?
+					params[:time_entry][:hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, time_unit
+				else
+					params[:time_entry][:hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, Setting.plugin_redmine_advanced_issues['default_unit']
+				end
 			end
 			save_issue_with_child_records_without_time_entry_record(params, existing_time_entry)
 		  end #save_issue_with_child_records_with_time_entry_record
