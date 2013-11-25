@@ -23,7 +23,6 @@ module RedmineAdvancedIssues
 	# Return the coef to apply to get the good value
 	##
 	def TimeManagement.getCoef(unit_time)
-	  
 	  coef = 1.0;
 	  
 	  return coef.to_f if unit_time.nil? || unit_time == 'hours'
@@ -50,7 +49,7 @@ module RedmineAdvancedIssues
     def TimeManagement.calculate(value, unit_time)
 	
 	  return nil if value.nil?
-
+	   
       value = value.to_f
       unit_time = Setting.plugin_redmine_advanced_issues['default_unit'].to_s
 
@@ -74,7 +73,6 @@ module RedmineAdvancedIssues
     end #calculate
 
     def TimeManagement.calculateHours(value, unit_time)
-
 	  return nil if value.nil?
 
       value = value.to_f
@@ -93,6 +91,7 @@ module RedmineAdvancedIssues
     end #def
 
     def TimeManagement.getUnitTimeFromChar(char)
+    	
       case char
         when Setting.plugin_redmine_advanced_issues['char_for_day']
           return 'days'
@@ -103,11 +102,12 @@ module RedmineAdvancedIssues
         when Setting.plugin_redmine_advanced_issues['char_for_year']
           return 'years'
         else
-          return ''
+          return 'hours'
       end #case
     end #def
 	
 	def TimeManagement.getCharFromTimeUnit(unit)
+		
 	  case unit
 		when 'days'
 			return Setting.plugin_redmine_advanced_issues['char_for_day']
@@ -118,10 +118,11 @@ module RedmineAdvancedIssues
 		when 'years'
 			return Setting.plugin_redmine_advanced_issues['char_for_year']
 	  end #case
-	  return '';
+	  return 'hours';
 	end #def
 
 	def TimeManagement.getDefaultTimeUnit(unit)
+		
 		case unit
 		when 'days'
 		  return I18n.t(:days)

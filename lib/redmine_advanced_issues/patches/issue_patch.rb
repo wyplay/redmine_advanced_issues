@@ -99,7 +99,7 @@ module RedmineAdvancedIssues
         end #def
 		  
 		  def calculated_spent_hours
-		    return self_and_descendants.sum("estimated_hours * done_ratio / 100").to_f || 0.0
+		    return self_and_descendants.sum("estimated_hours * done_ratio / 100.0").to_f || 0.0
 		  end #calculated_spent_hours
 		  
 		  def calculated_spent_time
@@ -114,14 +114,14 @@ module RedmineAdvancedIssues
 		  end #divergent_hours
 		  
 		  def divergent_time
-		    time = RedmineAdvancedIssues::TimeManagement.calculate divergent_hours, Setting.plugin_redmine_advanced_issues['default_unit']
+		    time = RedmineAdvancedIssues::TimeManagement.calculate divergent_time, Setting.plugin_redmine_advanced_issues['default_unit']
 			return nil if time.nil?
 			return time.to_f
 			#return sprintf "%.2f %c", time.to_f, default_unit_time
 		  end #divergent_time
 		  
 		  def remaining_hours
-			return self_and_descendants.sum("estimated_hours - (estimated_hours * done_ratio / 100)").to_f || 0.0
+			return self_and_descendants.sum("remaining_hours - (remaining_hours * (done_ratio / 100.0))").to_f || 0.0
 		  end #remaining_hours
 		  
 		  def remaining_time
@@ -143,6 +143,7 @@ module RedmineAdvancedIssues
 		  # 
 		  ##
 		  def save_issue_with_child_records_with_time_entry_record(params, existing_time_entry=nil)
+		  	
 			if params[:time_entry] && params[:time_entry][:hours].present?
 				value = params[:time_entry][:hours]
 				time_unit = ""
@@ -157,7 +158,9 @@ module RedmineAdvancedIssues
 					params[:time_entry][:hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, Setting.plugin_redmine_advanced_issues['default_unit']
 				end
 			end
+			
 			save_issue_with_child_records_without_time_entry_record(params, existing_time_entry)
+			
 		  end #save_issue_with_child_records_with_time_entry_record
 		  
       end #InstanceMethods

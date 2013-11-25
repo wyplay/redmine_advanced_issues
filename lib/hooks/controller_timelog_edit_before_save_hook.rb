@@ -15,8 +15,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require 'logger'
-
 require 'redmine_advanced_issues/time_management'
 
 module Hooks
@@ -34,7 +32,8 @@ module Hooks
         value = context[:params][:time_entry][:hours]
         time_unit = ""
 
-        if value.to_s =~ /^([0-9]+)\s*[a-z]{1}$/
+        #if value.to_s =~ /^([0-9]+)\s*[a-z]{1}$/
+		if (value.to_s.count "/^[a-z]/").to_i > 0
           time_unit = RedmineAdvancedIssues::TimeManagement.getUnitTimeFromChar value.to_s[-1, 1]
         else
           time_unit = Setting.plugin_redmine_advanced_issues['default_unit']
