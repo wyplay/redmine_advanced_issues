@@ -45,8 +45,13 @@ module RedmineAdvancedIssues
 
         #TODO: refactoring
         def default_unit_time
-		  return RedmineAdvancedIssues::TimeManagement.getDefaultTimeUnit(Setting.plugin_redmine_advanced_issues['default_unit'])
+		  		return RedmineAdvancedIssues::TimeManagement.getDefaultTimeUnit(Setting.plugin_redmine_advanced_issues['default_unit'])
         end #default_unit_time
+        
+        def hours
+        	return 12
+        end
+        
       end #InstanceMethods
     end #TimeEntryPatch
   end #Patches

@@ -20,9 +20,9 @@
         <%= labelled_fields_for :time_entry, @time_entry do |time_entry| %>
         <div class="splitcontentleft">
         <p>
-          <label for="time_entry_hours"><%= l(:field_time_entry_hours) %></label>
+          <label for="time_entry"><%= l(:field_time_entry) %></label>
           <%= text_field_tag 'time_entry[hours]', @time_entry.time, :size => 6 %> 
-          <%= l(:field_time_entry_hours, :unit => @time_entry.default_unit_time) %>
+          <%= l(@time_entry.default_unit_time) %>
         </p>
         </div>
         <div class="splitcontentright">

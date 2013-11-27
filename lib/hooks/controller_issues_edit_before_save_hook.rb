@@ -22,7 +22,7 @@ module Hooks
   class ControllerIssuesEditBeforeSaveHook < Redmine::Hook::ViewListener
 
     def controller_issues_edit_before_save(context={})
-
+	
 	  if context[:params].present? && context[:params][:remaining_hours].present?
       	
         value = context[:params][:remaining_hours]
@@ -60,8 +60,31 @@ module Hooks
         
       end #if
       
-      if context[:time_entry] && context[:time_entry][:hours].present?
+      if context[:params].present? && context[:params][:time_entry_hours].present?
+        value = context[:params][:time_entry_hours]
+        time_unit = ""
+
+        #if value.to_s =~ /^([0-9]+)\s*[a-z]{1}$/
+      	if (value.to_s.count "/^[a-z]/").to_i > 0
+          time_unit = RedmineAdvancedIssues::TimeManagement.getUnitTimeFromChar value.to_s[-1, 1]
+        else
+          time_unit = 'days' # Setting.plugin_redmine_advanced_issues['default_unit']
+        end #if
+
+        if !time_unit.empty?
+            context[:params][:time_entry_hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, time_unit
+            context[:params][:time_entry_hours] = context[:params][:time_entry_hours].to_s
+        end #if
+
+      end #if
+      
+      if context[:time_entry].present? && context[:time_entry][:hours].present?
         value = context[:time_entry][:hours]
+        
+        if context[:params].present? && context[:params][:time_entry][:hours].present?
+        	value = context[:params][:time_entry][:hours]
+        end 
+        
         time_unit = ""
 
         #if value.to_s =~ /^([0-9]+)\s*[a-z]{1}$/
@@ -73,30 +96,18 @@ module Hooks
 
         if !time_unit.empty?
             context[:time_entry][:hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, time_unit
+            context[:params][:time_entry][:hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, time_unit
+            
+            if context[:issue].time_entries.present? && context[:issue].time_entries.count > 0
+            	context[:issue].time_entries[ context[:issue].time_entries.count-1 ][:hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, time_unit
+            	context[:issue].time_entries[ context[:issue].time_entries.count-1 ].save
+            end
+            
         end #if
 
       end #if
       
-      
-      if context[:params].present? && context[:params][:time_entry_hours].present?
-        value = context[:params][:time_entry_hours]
-        time_unit = ""
-
-        #if value.to_s =~ /^([0-9]+)\s*[a-z]{1}$/
-      	if (value.to_s.count "/^[a-z]/").to_i > 0
-          time_unit = RedmineAdvancedIssues::TimeManagement.getUnitTimeFromChar value.to_s[-1, 1]
-        else
-          time_unit = 'hours' # Setting.plugin_redmine_advanced_issues['default_unit']
-        end #if
-
-        if !time_unit.empty?
-            context[:params][:time_entry_hours] = RedmineAdvancedIssues::TimeManagement.calculateHours value.to_f, time_unit
-            context[:params][:time_entry_hours] = context[:params][:time_entry_hours].to_s
-        end #if
-
-      end #if
-      
-
+    
     end #controller_issues_edit_before_save
 
     alias_method :controller_issues_new_before_save, :controller_issues_edit_before_save
