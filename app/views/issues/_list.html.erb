@@ -16,7 +16,7 @@
       <%#= sort_header_tag('id', :caption => '#', :default_order => 'desc') %>
       <% query.inline_columns.each do |column| %>
         <%= column_header(column) %>
-      <%# end %>
+      <% end %>
     </tr>
   </thead>
   <% previous_group = false %>
