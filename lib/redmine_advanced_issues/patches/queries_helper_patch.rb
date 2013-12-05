@@ -22,7 +22,11 @@ module RedmineAdvancedIssues
     module QueriesHelperPatch
 	
 	  def column_content_with_spent_hours(column, issue)
-	
+		
+			if column.name == :remaining_hours
+				#binding.pry
+			end
+			
 	    value = column.value(issue)
 		  
   		if %w(Fixnum Float).include?( value.class.name ) and [:spent_hours, :calculated_spent_hours, :divergent_hours, :remaining_hours].include?(column.name)

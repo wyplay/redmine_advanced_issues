@@ -121,7 +121,7 @@ module RedmineAdvancedIssues
 		  end #divergent_time
 		  
 		  def remaining_hours
-			return self_and_descendants.sum("remaining_hours - (remaining_hours * (done_ratio / 100.0))").to_f || 0.0
+				return self[:remaining_hours]
 		  end #remaining_hours
 		  
 		  def remaining_time
