@@ -90,6 +90,10 @@ module RedmineAdvancedIssues
 		  #return sprintf "%.2f %c", time.to_f, default_unit_time
         end #def
 
+				def spent_hours
+					return self_and_descendants.sum(self[:spent_hours])
+				end
+
         def total_spent_time
           hours = total_spent_hours
           return nil if hours.nil?
