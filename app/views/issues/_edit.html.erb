@@ -16,7 +16,7 @@
         <p>
           <label for="time_entry"><%= l(:field_time_entry) %></label>
           <%= text_field_tag 'time_entry[hours]', @time_entry.time, :size => 6 %> 
-          <%= l(@time_entry.default_unit_time) %>
+          <%= @time_entry.default_unit_time %>
         </p>
         </div>
         <div class="splitcontentright">
